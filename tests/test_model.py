@@ -1,7 +1,8 @@
 import pandas as pd
+
 from ml_project.config import TrainingConfig
 from ml_project.data import load_data, split_data
-from ml_project.model import create_model, train_model, evaluate_model
+from ml_project.model import create_model, evaluate_model, train_model
 
 
 def test_model_training_and_evaluation():

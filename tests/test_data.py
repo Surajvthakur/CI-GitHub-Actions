@@ -1,8 +1,9 @@
 from pathlib import Path
+
 import pandas as pd
 
-from ml_project.data import load_data
 from ml_project.config import TrainingConfig
+from ml_project.data import load_data
 
 
 def test_load_data_has_target():

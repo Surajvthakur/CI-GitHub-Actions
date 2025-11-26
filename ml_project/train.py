@@ -3,7 +3,7 @@ from pathlib import Path
 
 from .config import TrainingConfig
 from .data import load_data, split_data
-from .model import create_model, train_model, evaluate_model
+from .model import create_model, evaluate_model, train_model
 
 
 def main() -> float:

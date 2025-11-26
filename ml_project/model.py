@@ -1,8 +1,9 @@
 from typing import Any
+
+import numpy as np
+from sklearn.base import BaseEstimator
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
-from sklearn.base import BaseEstimator
-import numpy as np
 
 
 def create_model() -> BaseEstimator:
