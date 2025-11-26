@@ -13,4 +13,4 @@ def test_model_training_and_evaluation():
     accuracy = evaluate_model(model, X_test, y_test)
 
     # with toy data, just ensure we get a valid number
-    assert 0.0 <= accuracy <= 1.0
+    assert 0.0 <= accuracy <= 0.5
