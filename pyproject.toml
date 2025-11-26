@@ -1,7 +1,7 @@
 [tool.black]
 line-length = 88
 target-version = ["py310", "py311"]
-exclude = ["venv", ".venv"]
+exclude = 'venv|\.venv'
 
 [tool.isort]
 profile = "black"
