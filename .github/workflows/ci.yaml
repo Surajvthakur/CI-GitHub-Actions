@@ -1,0 +1,86 @@
+name: CI - ML Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-test:
+    # ---- MATRIX: run on multiple Python versions ----
+    strategy:
+      matrix:
+        python-version: [ "3.10", "3.11" ]
+
+    runs-on: ubuntu-latest
+
+    steps:
+      # ---- 1. Checkout code ----
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ---- 2. Set up Python (matrix version) ----
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # ---- 3. Cache pip dependencies ----
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      # ---- 4. Install dependencies ----
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+
+      # ---- 5. Code formatting check (black) ----
+      - name: Check formatting with black
+        run: |
+          black --check ml_project tests
+
+      # ---- 6. Import sorting (isort) ----
+      - name: Check imports with isort
+        run: |
+          isort --check-only ml_project tests
+
+      # ---- 7. Linting (flake8) ----
+      - name: Lint with flake8
+        run: |
+          flake8 ml_project tests
+
+      # ---- 8. Type checking (mypy) ----
+      - name: Type check with mypy
+        run: |
+          mypy ml_project
+
+      # ---- 9. Run unit tests (pytest) ----
+      - name: Run tests
+        run: |
+          pytest -v
+
+      # ---- 10. Run a “CI-training” step (fast model training) ----
+      - name: Run training script (smoke test)
+        env:
+          DATA_PATH: data/sample_data.csv
+          OUTPUT_DIR: artifacts
+        run: |
+          python -m ml_project.train
+
+      # ---- 11. Upload artifacts (model/report) ----
+      - name: Upload artifacts
+        if: always()  # even if tests fail, we can inspect outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: ml-artifacts-${{ matrix.python-version }}
+          path: |
+            artifacts/
+            .pytest_cache/
+          if-no-files-found: ignore
