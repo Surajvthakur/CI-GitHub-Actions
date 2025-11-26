@@ -16,9 +16,7 @@ def load_data(path: str) -> pd.DataFrame:
     return df
 
 
-def split_data(
-    df: pd.DataFrame, config: TrainingConfig
-) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
+def split_data(df: pd.DataFrame, config: TrainingConfig) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
     X = df.drop(columns=[config.target_column])
     y = df[config.target_column]
     return train_test_split(
