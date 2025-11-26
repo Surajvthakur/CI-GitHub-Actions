@@ -2,7 +2,6 @@ from pathlib import Path
 
 import pandas as pd
 
-from ml_project.config import TrainingConfig
 from ml_project.data import load_data
 
 
