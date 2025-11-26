@@ -1,4 +1,3 @@
-from typing import Any
 
 from sklearn.base import BaseEstimator
 from sklearn.linear_model import LogisticRegression
